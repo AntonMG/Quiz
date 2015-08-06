@@ -24,11 +24,11 @@ exports.index = function(req, res) {
   if(req.query.search && req.query.search !== '') {
     var claves = percent + req.query.search.replace(' ',percent) + percent;
     models.Quiz.findAll({where: ["pregunta like ?", claves]}).then( function(quizes) {
-      res.render('quizes/index.ejs', {quizes: quizes, errors: []});
+      res.render('quizes/index', {quizes: quizes, errors: []});
     });
   } else {
     models.Quiz.findAll().then( function(quizes) {
-      res.render('quizes/index.ejs', {quizes: quizes, errors: []});
+      res.render('quizes/index', {quizes: quizes, errors: []});
     });
   }
 };
