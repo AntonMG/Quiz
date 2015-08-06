@@ -46,6 +46,22 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(function(req, res, next) {
+  var now = Date.now();
+  
+  if (req.session.lastRequest
+      && req.session.user
+      && ((now - req.session.lastRequest) / 1000 > 120)) {  
+    req.session.lastRequest = now;
+    req.session.errors = [{"message": 'Sesión caducada, por favor vuelva a loguearse.'}];
+    delete req.session.user;
+    res.redirect('/login');
+  } else {
+    req.session.lastRequest = now;
+    next();
+  }
+});
+
 app.use('/', routes);
 
 // catch 404 and forward to error handler
